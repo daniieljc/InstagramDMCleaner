@@ -23,31 +23,6 @@ SetWinDelay, 0
 delayMS := 450 ; 450ms delay between each iteration. (Notice that 50 + 500 + 450 is the actual delay between each request)
 MsgBox, Script started!`nPress b to toggle on and n to exit app!
 
-Delete(xIn, yIn)
-{
-	PixelGetColor, colorCard, xIn, yIn
-	if (colorCard = 0xFFFFFF)
-	{
-		MouseClickDrag, Left, %xIn%, %yIn%, 35, -170, 0
-		sleep 50
-		PixelGetColor, colorDelete, xIn, yIn
-		if (colorDelete = 0x5649ED) ; Red color for delete
-		{
-			Click, %xIn%, %yIn%
-			sleep 500
-			PixelGetColor, colorConfirm, 595, 342
-			if (colorConfirm = 0xCCCCCC)
-			{
-				Click, 595, 342 ; Confrim Delete
-				; Click 364, 342 ; Confrim Cancel
-				return 1
-			}
-		}
-	}
-	
-	return 0
-}
-
 n::ExitApp
 b::
 WinMove, Instagram, , -8, -8, 800, 576
@@ -59,13 +34,12 @@ loop
 	
 	IfWinActive, Instagram
 	{
-		res := Delete(730, 140)
-		if (res = 1)
-		{
-			sleep %delayMS%
-		}
-		Delete(730, 210)
+		; If you have a conversation that cannot be deleted increase it by 60, for example, if the first conversation cannot be deleted put 240 instead of 180.
+		Click 120, 180 ; We select conversation
+		Click 760, 120 ; We click on the information of the conversation
+		Click 595, 350 ; We click on delete
+		Click ; We confirm the deletion
 	}
 	sleep %delayMS%
 }
-return   
+return  
